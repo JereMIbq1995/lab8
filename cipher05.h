@@ -12,10 +12,10 @@
 class Cipher05 : public Cipher
 {
 public:
-   virtual std::string getPseudoAuth()  { return "pseudocode author"; }
-   virtual std::string getCipherName()  { return "cipher name"; }
-   virtual std::string getEncryptAuth() { return "encrypt author"; }
-   virtual std::string getDecryptAuth() { return "decrypt author"; }
+   virtual std::string getPseudoAuth()  { return "Gabriel Sanahuano"; }
+   virtual std::string getCipherName()  { return "Affine Cipher"; }
+   virtual std::string getEncryptAuth() { return "Gabriel Sanahuano"; }
+   virtual std::string getDecryptAuth() { return "Gabriel Sanahuanog"; }
 
    /***********************************************************
     * GET CIPHER CITATION
@@ -23,7 +23,11 @@ public:
     ***********************************************************/
    virtual std::string getCipherCitation()
    {
-      return std::string("citation");
+      std::string myCitation;
+      myCitation += "practicalcryptography.com, ";
+      myCitation += "\"Affine Cipher\", \n  retrieved: ";
+      myCitation += "http://practicalcryptography.com/ciphers/classical-era/affine/";
+      return myCitation;
    }
    
    /**********************************************************
