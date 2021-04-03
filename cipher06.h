@@ -23,7 +23,10 @@ public:
     ***********************************************************/
    virtual std::string getCipherCitation()
    {
-      return std::string("citation");
+      std::string citations = "Britannica, Gustavus J. Simmons, Vigenere Cipher, Jul 22, 2009 - https://www.britannica.com/topic/Vigenere-cipher\n";
+      citations += "GeeksforGeeks, Vigenere Cipher, Apr 21, 2020 - https://www.geeksforgeeks.org/vigenere-cipher/\n";
+
+      return citations;
    }
    
    /**********************************************************
