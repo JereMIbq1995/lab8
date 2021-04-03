@@ -50,20 +50,20 @@ public:
 
       // TODO: please format your pseudocode
       // The encrypt pseudocode
-      str =  "\n   encrypt(plainText, password)\n\n";
-      str += "      FOR (i=0; i<k.length; i++)\n";
-      str += "         c[i] = p[i] + k[i];\n";
-      str += "      FOR (j=k.length; j<p.length; j++)\n";
-      str += "         c[j] = p[j] + p[j-k.length];\n";
-      str += "      RETURN cipherText\n";
+      // str =  "\n   encrypt(plainText, password)\n\n";
+      // str += "      FOR (i=0; i<k.length; i++)\n";
+      // str += "         c[i] = p[i] + k[i];\n";
+      // str += "      FOR (j=k.length; j<p.length; j++)\n";
+      // str += "         c[j] = p[j] + p[j-k.length];\n";
+      // str += "      RETURN cipherText\n";
 
       // The decrypt pseudocode
-      str += "\n   decrypt(cipherText, password)\n\n";
-      str += "      FOR (i=0; i<k.length; i++)\n";
-      str += "         c[i] = p[i] + k[i];\n";
-      str += "      FOR (j=k.length; j<p.length; j++)\n";
-      str += "         c[j] = p[j] + p[j-k.length];\n";
-      str += "      RETURN cipherText\n";
+      // str += "\n   decrypt(cipherText, password)\n\n";
+      // str += "      FOR (i=0; i<k.length; i++)\n";
+      // str += "         c[i] = p[i] + k[i];\n";
+      // str += "      FOR (j=k.length; j<p.length; j++)\n";
+      // str += "         c[j] = p[j] + p[j-k.length];\n";
+      // str += "      RETURN cipherText\n";
 
       return str;
    }
@@ -87,6 +87,8 @@ public:
       }
       int key = ((accum + password.length()) % 128); // mod it by 128 ASCII size of table, could be const
 
+      std::cout << "key: " << key << std::endl;
+
 // 1. push_back the key onto the vector
       keystream.push_back(key);
 
@@ -100,11 +102,10 @@ public:
       }
 
 // 3. loop thru plaintext, with every element of plaintext, add it to the same element of keystream, then mod it with 128
-      for(int i = 0; i <= plainText.length(); i++)
+      for(int i = 0; i < plainText.length(); i++)
       {
          char c = plainText[i]; // turn element into char
          cipherText.push_back((char)((keystream[i] + ((int)c)) % 128));
-
       }
 
       return cipherText;
@@ -129,23 +130,21 @@ public:
          accum += (int)c;
       }
       int key = ((accum + password.length()) % 128); // mod it by 128 ASCII size of table, could be const
-
-      for(int i = 1; i < cipherText.length(); i++)
-      {
-         // for every element turn it into a char, then turn into an int, then push_Back onto keystream
-         char c = cipherText[i];
-         keystream.push_back((int)c);
-      }
+      
       keystream.push_back(key); // represents the ciphertext and key
 
-      // convert from int to char
-      for(int i = 0; i <= cipherText.length(); i++)
+      for(int i = 0; i < cipherText.length(); i++)
       {
-         char c = cipherText[i];
-         int intAscii = ((int)c - keystream[i] + 128) % 128;
-         plainText.push_back((char)intAscii); // caste back to char to display human readable
+         // for every element turn it into a char, then turn into an int
+         char c = ((int)(cipherText.c_str()[i]) - keystream[i] + 128) % 128;
+         plainText.push_back(c); // then push_Back onto plaintext
+         if (keystream.size() < cipherText.size())
+            keystream.push_back((int)c); //then push_Back onto keystream
+         std::cout << "data: " << ((int)(cipherText.c_str()[i]) - keystream[i]) << std::endl;
       }
 
+      for (int i = 0; i <= keystream.size(); i++)
+         std::cout << "keystream[i]: " << keystream[i] << std::endl;
 
       return plainText;
    }
