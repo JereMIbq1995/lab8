@@ -24,18 +24,21 @@ public:
    virtual std::string getCipherCitation()
    {
       std::string s;
-      s =  "UCF.edu, ";
+      s = "Crypto Corner, ";
+      s += "\'Autokey Cipher\', \n    retrieved: ";
+      s += "https://crypto.interactive-maths.com/autokey-cipher.html\n";
+
+      s += "UCF.edu, ";
       s += "\'3.2 Autokey Cipher\', \n    retrieved: ";
       s += "http://www.cs.ucf.edu/~dmarino/ucf/cis3362/lectures/3-PolyAlpha.pdf\n";
 
-      s +=  "GeeksforGeeks, ";
+      s += "GeeksforGeeks, ";
       s += "\'Autokey Cipher | Symmetric Ciphers\', \n    retrieved: ";
       s += "https://www.geeksforgeeks.org/autokey-cipher-symmetric-ciphers/\n";
 
-      s +=  "OpenGenus.org, ";
+      s += "OpenGenus.org, ";
       s += "\'Auto Key Cipher\', \n    retrieved: ";
       s += "https://iq.opengenus.org/auto-key-cipher/\n";
-
 
       return s;
    }
@@ -50,27 +53,47 @@ public:
 
       // TODO: please format your pseudocode
       // The encrypt pseudocode
-      // str =  "\n   encrypt(plainText, password)\n\n";
-      // str += "      FOR (i=0; i<k.length; i++)\n";
-      // str += "         c[i] = p[i] + k[i];\n";
-      // str += "      FOR (j=k.length; j<p.length; j++)\n";
-      // str += "         c[j] = p[j] + p[j-k.length];\n";
-      // str += "      RETURN cipherText\n";
+      str =  "\n   encrypt(plainText, password)\n\n";
+      str += "      FOR i in size of password\n";
+      str += "         char <- password at i\n";
+      str += "         accum <- (int)char\n";
+      str += "      key <- (accum + length of password) mod 128\n";
+      str += "      append key to keystream\n\n";
+
+      str += "      FOR i in size of plaintext - 2\n";
+      str += "         char <- plaintext[i]\n";
+      str += "         append keystream with (int)char\n\n";
+
+      str += "      FOR i in size of plaintext\n";
+      str += "         char <- plaintext[i]\n";
+      str += "         append cipherText with keystream and plaintext\n\n";
+
+      str += "      RETURN cipherText\n";
 
       // The decrypt pseudocode
-      // str += "\n   decrypt(cipherText, password)\n\n";
-      // str += "      FOR (i=0; i<k.length; i++)\n";
-      // str += "         c[i] = p[i] + k[i];\n";
-      // str += "      FOR (j=k.length; j<p.length; j++)\n";
-      // str += "         c[j] = p[j] + p[j-k.length];\n";
-      // str += "      RETURN cipherText\n";
+      str += "\n   decrypt(cipherText, password)\n\n";
+      str += "      FOR i in length of password\n";
+      str += "         char <- password[i]\n";
+      str += "         accum <- (int)char\n\n";
+
+      str += "      key <- (accum + length of password) mod 128\n";
+      str += "      append keystream with key\n\n";
+      
+      str += "      FOR i in length of cipherText\n";
+      str += "         char ((int)cipherText) - keystream at i + 128) mod 128\n";
+      str += "         append char to plainText\n\n";
+
+      str += "         IF size of keystream < size of cipherText\n";
+      str += "           append char to keystream\n\n";
+      
+      str += "      RETURN plainText\n";
 
       return str;
    }
 
    /**********************************************************
     * ENCRYPT
-    * TODO: ADD description
+    * TODO: encrypt the plaintext using the password
     **********************************************************/
    virtual std::string encrypt(const std::string & plainText, 
                                const std::string & password)
@@ -86,8 +109,6 @@ public:
          accum += (int)c;
       }
       int key = ((accum + password.length()) % 128); // mod it by 128 ASCII size of table, could be const
-
-      std::cout << "key: " << key << std::endl;
 
 // 1. push_back the key onto the vector
       keystream.push_back(key);
@@ -113,7 +134,7 @@ public:
 
    /**********************************************************
     * DECRYPT
-    * TODO: ADD description
+    * TODO: decrypt the ciphertext using the password
     **********************************************************/
    virtual std::string decrypt(const std::string & cipherText, 
                                const std::string & password)
@@ -140,11 +161,7 @@ public:
          plainText.push_back(c); // then push_Back onto plaintext
          if (keystream.size() < cipherText.size())
             keystream.push_back((int)c); //then push_Back onto keystream
-         std::cout << "data: " << ((int)(cipherText.c_str()[i]) - keystream[i]) << std::endl;
       }
-
-      for (int i = 0; i <= keystream.size(); i++)
-         std::cout << "keystream[i]: " << keystream[i] << std::endl;
 
       return plainText;
    }
