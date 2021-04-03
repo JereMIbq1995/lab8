@@ -12,10 +12,10 @@
 class Cipher04 : public Cipher
 {
 public:
-   virtual std::string getPseudoAuth()  { return "pseudocode author"; }
-   virtual std::string getCipherName()  { return "cipher name"; }
-   virtual std::string getEncryptAuth() { return "encrypt author"; }
-   virtual std::string getDecryptAuth() { return "decrypt author"; }
+   virtual std::string getPseudoAuth()  { return "Timothy Stephenson"; }
+   virtual std::string getCipherName()  { return "XOR"; }
+   virtual std::string getEncryptAuth() { return "Timothy Stephenson"; }
+   virtual std::string getDecryptAuth() { return "Timothy Stephenson"; }
 
    /***********************************************************
     * GET CIPHER CITATION
@@ -36,10 +36,20 @@ public:
 
       // TODO: please format your pseudocode
       // The encrypt pseudocode
-      str =  "insert the encryption pseudocode\n";
+      str =  "encrypt plaintext(plainText, password)";
+      str += "\n FOR i in size of plainText divided by size of password plus 1";
+      str += "\n     FOR x in length of password";
+      str += "\n        n = i * password length + x";
+      str += "\n        cipherText at value of n = plainText at value n xor with password at value x";
+      str += "\n return cipherText";
 
       // The decrypt pseudocode
-      str += "insert the decryption pseudocode\n";
+      str +=  "decrypt ciphertext(cipherText, password)";
+      str += "\n FOR i in size of cipherText divided by size of password + 1";
+      str += "\n     FOR x in length of password";
+      str += "\n        n = i * password length + x";
+      str += "\n        plainText at value of n = cipherText at value n xor with password at value x";
+      str += "\n return plainText";
 
       return str;
    }
@@ -52,7 +62,16 @@ public:
                                const std::string & password)
    {
       std::string cipherText = plainText;
-      // TODO - Add your code here
+      for (int i = 0; i < (plainText.length()/password.length() + 1); i++)
+      {      
+         for(int x = 0; x < password.length(); x++)
+         {
+            int n = i * password.length() + x;
+            if(n > plainText.length())
+               break;
+            cipherText[n] = plainText[n] ^ password[x];
+         }
+      }
       return cipherText;
    }
 
@@ -64,7 +83,16 @@ public:
                                const std::string & password)
    {
       std::string plainText = cipherText;
-      // TODO - Add your code here
+      for (int i = 0; i < (cipherText.length() / password.length() + 1); i++)
+      {      
+         for(int x = 0; x < password.length(); x++)
+         {
+            int n = i * password.length() + x;
+            if(n > plainText.length())
+               break;
+            plainText[n] = cipherText[n] ^ password[x];
+         }
+      }
       return plainText;
    }
 };
