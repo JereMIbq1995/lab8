@@ -6,6 +6,8 @@
 #ifndef CIPHER06_H
 #define CIPHER06_H
 #include "cipher.h"
+#define NUMCHARS 91
+#define STARTCHAR ' '
 /********************************************************************
  * CLASS
  *******************************************************************/
@@ -92,11 +94,11 @@ public:
       // convert plainText to the cipher
       for (int i = 0; i < plainText.size(); i++) {
          // convert to 0 - 90 for valid characters
-         char p = plainText[i] - ' ';
-         char k = keyStr[i] - ' ';
+         char p = plainText[i] - STARTCHAR;
+         char k = keyStr[i] - STARTCHAR;
 
          // convert p to c using k
-         char c = ((p + k) % 91) + ' ';
+         char c = ((p + k) % NUMCHARS) + STARTCHAR;
 
          cipherText.push_back(c);
       }
@@ -132,11 +134,11 @@ public:
       // convert plainText to the cipher
       for (int i = 0; i < cipherText.length(); i++) {
          // convert to 0 - 90
-         char c = cipherText[i] - ' ';
-         char k = keyStr[i] - ' ';
+         char c = cipherText[i] - STARTCHAR;
+         char k = keyStr[i] - STARTCHAR;
 
          // convert p to c using k
-         char p = ((c - k + 91) % 91) + ' ';
+         char p = ((c - k + NUMCHARS) % NUMCHARS) + STARTCHAR;
 
          plainText.push_back(p);
       }
